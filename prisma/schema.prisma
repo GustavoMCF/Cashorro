@@ -16,7 +16,7 @@ datasource db {
 model Transaction {
   id          String   @id @default(uuid())
   description String
-  amount      Float
+  amount      Int
   type        TransactionType
   source      String
   createdAt   DateTime @default(now())
