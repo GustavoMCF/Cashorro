@@ -30,11 +30,19 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
 - Definido modelo `Transaction` com campos:
   - `id` (UUID)
   - `description` (String)
-  - `amount` (Float)
+  - `amount` (Int)
   - `type` (INCOME | EXPENSE)
   - `source` (String)
   - `createdAt` (DateTime)
 - Executada a migration inicial
+
+### 4. Funcionalidade real de transações
+
+- Implementada rota `GET /transactions` com leitura real do banco
+- Implementada rota `POST /transactions` com:
+  - Validação com Zod
+  - Conversão automática para centavos
+  - Retorno formatado como reais
 
 ---
 
@@ -46,6 +54,7 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
 - PostgreSQL
 - ESLint Flat Config + Prettier
 - Dotenv
+- Zod
 - Nodemon
 
 ---
@@ -95,13 +104,15 @@ npm run dev
 
 ---
 
-## 🔍 Endpoints disponíveis (até agora)
+## 🔍 Endpoints disponíveis
 
-| Método | Rota             | Descrição                       |
-|--------|------------------|----------------------------------|
-| GET    | `/healthcheck`   | Verifica se a API está online   |
-| GET    | `/income`        | Lista de ganhos (mock)          |
-| GET    | `/expenses`      | Lista de gastos (mock)          |
+| Método | Rota             | Descrição                                     |
+|--------|------------------|-----------------------------------------------|
+| GET    | `/healthcheck`   | Verifica se a API está online                 |
+| GET    | `/transactions`  | Lista todas as transações salvas              |
+| POST   | `/transactions`  | Cadastra nova transação com validação e centavos |
+| GET    | `/income`        | Mock de ganhos (descontinuar em breve)        |
+| GET    | `/expenses`      | Mock de gastos (descontinuar em breve)        |       |
 
 ---
 
@@ -113,11 +124,13 @@ npm run dev
 │   ├── controllers/
 │   │   └── transactions/
 │   │       ├── income.controller.js
-│   │       └── expenses.controller.js
+│   │       ├── expenses.controller.js
+│   │       └── transactions.controller.js
 │   ├── routes/
 │   │   ├── transactions/
 │   │   │   ├── income.routes.js
-│   │   │   └── expenses.routes.js
+│   │   │   ├── expenses.routes.js
+│   │   │   └── transactions.routes.js
 │   │   └── healthcheck.routes.js
 │   └── server.js
 ├── prisma/
