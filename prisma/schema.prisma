@@ -13,3 +13,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Transaction {
+  id          String   @id @default(uuid())
+  description String
+  amount      Float
+  type        TransactionType
+  source      String
+  createdAt   DateTime @default(now())
+
+  @@map("transactions")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
