@@ -1,6 +1,6 @@
 # 💸 Ca$horro – API Back-end
 
-Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, padronização e testabilidade. Essa documentação está sendo construída passo a passo conforme o projeto evolui.
+Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, padronização e testabilidade.
 
 ---
 
@@ -18,7 +18,6 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
 
 ### 2. Organização do código
 
-- Convenções alteradas para nomes em inglês
 - Estrutura do projeto modularizada com `routes/` e `controllers/`
 - Separação por domínio: `transactions/income` e `transactions/expenses`
 
@@ -26,7 +25,6 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
 
 - Instalado e configurado PostgreSQL local
 - Instalado Prisma ORM
-- Criado banco chamado `cashorro`
 - Definido modelo `Transaction` com campos:
   - `id` (UUID)
   - `description` (String)
@@ -83,7 +81,7 @@ npm install
 ### 3. Configure o banco de dados
 
 - Instale o PostgreSQL
-- Crie o banco com o nome `cashorro`
+- Crie o banco com o nome `cashorro` ou outro escolhido
 - Configure o arquivo `.env` com a URL de conexão:
 
 ```env
