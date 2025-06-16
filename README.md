@@ -18,8 +18,9 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
 
 ### 2. Organização do código
 
-- Estrutura do projeto modularizada com `routes/` e `controllers/`
-- Separação por domínio: `transactions/income` e `transactions/expenses`
+- Estrutura modularizada com pastas `routes/`, `controllers/` e `lib/`
+- Separação por domínio: `transactions`, `accounts`, `categories`
+- Organização das rotas por subpastas: `transactions/income`, `transactions/expenses`, etc.
 
 ### 3. Integração com banco de dados
 
@@ -45,6 +46,8 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
   - Cálculo de receitas, despesas e saldo
   - Classificação visual (`azul`, `vermelho`, `equilibrado`)
   - Análise técnica (`superavitário`, `endividado`, etc.)
+- Rota `PUT /transactions/:id` para atualização completa
+- Rota `DELETE /transactions/:id` para exclusão
 ---
 
 ## 📦 Tecnologias usadas
@@ -107,14 +110,24 @@ npm run dev
 
 ## 🔍 Endpoints disponíveis
 
-| Método | Rota             | Descrição                                     |
-|--------|------------------|-----------------------------------------------|
-| GET    | `/healthcheck`   | Verifica se a API está online                 |
-| GET    | `/transactions`  | Lista todas as transações salvas              |
-| POST   | `/transactions`  | Cadastra nova transação com validação e centavos |
-| GET    | `/summary`       | Mostra saldo, status (azul/vermelho/equilibrado) e análise técnica |
-| GET    | `/income`        | Mock de ganhos (descontinuar em breve)        |
-| GET    | `/expenses`      | Mock de gastos (descontinuar em breve)        |       |
+| Método | Rota               | Descrição                                                                 |
+|--------|--------------------|---------------------------------------------------------------------------|
+| GET    | `/healthcheck`     | Verifica se a API está online                                             |
+| GET    | `/transactions`    | Lista todas as transações salvas                                          |
+| POST   | `/transactions`    | Cadastra nova transação com validação e valor em centavos                 |
+| PUT    | `/transactions/:id`| Atualiza uma transação existente                                          |
+| DELETE | `/transactions/:id`| Remove uma transação                                                      |
+| GET    | `/summary`         | Mostra saldo, status (azul/vermelho/equilibrado) e análise técnica        |
+| GET    | `/accounts`        | Lista todas as contas                                                     |
+| POST   | `/accounts`        | Cria uma nova conta                                                       |
+| PUT    | `/accounts/:id`    | Atualiza uma conta existente                                              |
+| DELETE | `/accounts/:id`    | Remove uma conta                                                          |
+| GET    | `/categories`      | Lista todas as categorias                                                 |
+| POST   | `/categories`      | Cria uma nova categoria                                                   |
+| PUT    | `/categories/:id`  | Atualiza uma categoria existente                                          |
+| DELETE | `/categories/:id`  | Remove uma categoria                                                      |
+| GET    | `/income`          | Mock de ganhos                                                            |
+| GET    | `/expenses`        | Mock de gastos                                                            |
 
 ---
 
@@ -124,23 +137,77 @@ npm run dev
 .
 ├── src/
 │   ├── controllers/
+│   │   ├── accounts/
+│   │   │   └── accounts.controller.js
+│   │   ├── categories/
+│   │   │   └── categories.controller.js
 │   │   └── transactions/
 │   │       ├── income.controller.js
 │   │       ├── expenses.controller.js
 │   │       └── transactions.controller.js
 │   ├── routes/
+│   │   ├── accounts/
+│   │   │   └── accounts.routes.js
+│   │   ├── categories/
+│   │   │   └── categories.routes.js
 │   │   ├── transactions/
 │   │   │   ├── income.routes.js
 │   │   │   ├── expenses.routes.js
 │   │   │   └── transactions.routes.js
 │   │   └── healthcheck.routes.js
+│   ├── lib/
+│   │   └── prismaClient.js
 │   └── server.js
 ├── prisma/
 │   ├── schema.prisma
-│   └── migrations/
+│   ├── migrations/
+│   └── seed.js
 ├── .env
 ├── .gitignore
 ├── eslint.config.mjs
 ├── package.json
 └── README.md
+```
+
+## 🧩 Diagrama Relacional
+
+```dbml
+Table Account {
+  id String [pk, default: `uuid()`]
+  name String
+  type AccountType
+  color String
+  initialBalance Int
+  createdAt DateTime [default: `now()`]
+}
+
+Table Category {
+  id String [pk, default: `uuid()`]
+  name String
+  type TransactionType
+  icon String
+  createdAt DateTime [default: `now()`]
+}
+
+Table Transaction {
+  id String [pk, default: `uuid()`]
+  description String
+  amount Int
+  type TransactionType
+  source String
+  createdAt DateTime [default: `now()`]
+  accountId String [ref: > Account.id]
+  categoryId String [ref: > Category.id]
+}
+
+Enum AccountType {
+  BANK
+  CASH
+  OTHER
+}
+
+Enum TransactionType {
+  INCOME
+  EXPENSE
+}
 ```
