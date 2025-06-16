@@ -1,8 +1,5 @@
-import pkg from '@prisma/client';
+import prisma from '../../lib/prismaClient.js';
 import { z } from 'zod';
-
-const { PrismaClient } = pkg;
-const prisma = new PrismaClient();
 
 export async function listTransactions(req, res) {
   try {

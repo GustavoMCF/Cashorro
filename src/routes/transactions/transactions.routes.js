@@ -4,9 +4,9 @@ import {
   updateTransaction,
   deleteTransaction,
   getSummary
-} from '../controllers/transactions/transactions.controller.js'
+} from '../../controllers/transactions/transactions.controller.js'
 
-
+import { Router } from 'express';
 
 
 const router = Router();

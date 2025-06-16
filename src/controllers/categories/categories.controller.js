@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prismaClient.js'
+import prisma from '../../lib/prismaClient.js'
 
 export async function createCategory(req, res) {
   try {
