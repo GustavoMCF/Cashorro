@@ -55,3 +55,50 @@ export async function createTransaction(req, res) {
     return res.status(500).json({ error: 'Erro interno ao criar transação' });
   }
 }
+
+export async function getSummary(req, res) {
+  try {
+    const incomeAgg = await prisma.transaction.aggregate({
+      _sum: { amount: true },
+      where: { type: 'INCOME' },
+    });
+
+    const expensesAgg = await prisma.transaction.aggregate({
+      _sum: { amount: true },
+      where: { type: 'EXPENSE' },
+    });
+
+    const income = incomeAgg._sum.amount ?? 0;
+    const expenses = expensesAgg._sum.amount ?? 0;
+    const balance = income - expenses;
+
+    // Status visual
+    const status =
+      balance > 0 ? 'azul' : balance < 0 ? 'vermelho' : 'equilibrado';
+
+    // Análise técnica
+    const gastoPercentual = income > 0 ? expenses / income : 0;
+    let analise = 'desorganizado';
+
+    if (income === 0) {
+      analise = 'desorganizado';
+    } else if (balance < 0 || gastoPercentual >= 1) {
+      analise = 'endividado';
+    } else if (gastoPercentual <= 0.7) {
+      analise = 'superavitário';
+    } else {
+      analise = 'equilibrado';
+    }
+
+    return res.status(200).json({
+      income,
+      expenses,
+      balance,
+      status,
+      analise,
+    });
+  } catch (error) {
+    console.error('Erro ao gerar resumo:', error);
+    return res.status(500).json({ error: 'Erro interno ao gerar resumo financeiro' });
+  }
+}
