@@ -102,3 +102,40 @@ export async function getSummary(req, res) {
     return res.status(500).json({ error: 'Erro interno ao gerar resumo financeiro' });
   }
 }
+
+export async function updateTransaction(req, res) {
+  try {
+    const { id } = req.params
+    const { description, amount, type, source, accountId, categoryId } = req.body
+
+    const transaction = await prisma.transaction.update({
+      where: { id },
+      data: {
+        description,
+        amount,
+        type,
+        source,
+        accountId,
+        categoryId
+      }
+    })
+
+    return res.json(transaction)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Erro ao atualizar transação' })
+  }
+}
+
+export async function deleteTransaction(req, res) {
+  try {
+    const { id } = req.params
+
+    await prisma.transaction.delete({ where: { id } })
+
+    return res.status(204).send()
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Erro ao deletar transação' })
+  }
+}
