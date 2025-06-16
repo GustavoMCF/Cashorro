@@ -41,7 +41,10 @@ Projeto back-end do sistema **Ca$horro**, criado com foco em boas práticas, pad
   - Validação com Zod
   - Conversão automática para centavos
   - Retorno formatado como reais
-
+- Implementada rota `GET /summary` com:
+  - Cálculo de receitas, despesas e saldo
+  - Classificação visual (`azul`, `vermelho`, `equilibrado`)
+  - Análise técnica (`superavitário`, `endividado`, etc.)
 ---
 
 ## 📦 Tecnologias usadas
@@ -109,6 +112,7 @@ npm run dev
 | GET    | `/healthcheck`   | Verifica se a API está online                 |
 | GET    | `/transactions`  | Lista todas as transações salvas              |
 | POST   | `/transactions`  | Cadastra nova transação com validação e centavos |
+| GET    | `/summary`       | Mostra saldo, status (azul/vermelho/equilibrado) e análise técnica |
 | GET    | `/income`        | Mock de ganhos (descontinuar em breve)        |
 | GET    | `/expenses`      | Mock de gastos (descontinuar em breve)        |       |
 
