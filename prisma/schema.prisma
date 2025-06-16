@@ -21,10 +21,45 @@ model Transaction {
   source      String
   createdAt   DateTime @default(now())
 
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id])
+
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+
   @@map("transactions")
 }
 
 enum TransactionType {
   INCOME
   EXPENSE
+}
+
+model Account {
+  id            String        @id @default(uuid())
+  name          String
+  type          AccountType
+  color         String
+  initialBalance Int
+  createdAt     DateTime      @default(now())
+  transactions  Transaction[]
+
+  @@map("accounts")
+}
+
+enum AccountType {
+  BANK
+  CASH
+  OTHER
+}
+
+model Category {
+  id            String         @id @default(uuid())
+  name          String
+  type          TransactionType
+  icon          String
+  createdAt     DateTime       @default(now())
+  transactions  Transaction[]
+
+  @@map("categories")
 }
