@@ -13,7 +13,7 @@ import categoryRoutes from './routes/categories.routes.js'
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3333;
+//const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(helmet());
@@ -26,6 +26,11 @@ app.use(transactionsRoutes);
 app.use(accountRoutes)
 app.use(categoryRoutes)
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  const port = process.env.PORT
+  app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`)
+  })
+}
+
+export default app
