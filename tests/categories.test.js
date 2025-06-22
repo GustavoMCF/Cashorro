@@ -20,8 +20,8 @@ describe('Categories API', () => {
       .post('/categories')
       .send({
         name: 'Transporte',
-        type: 'EXPENSE', // ⚠️ Enum obrigatório
-        icon: 'car'       // ⚠️ Campo obrigatório
+        type: 'EXPENSE', 
+        icon: 'car' 
       })
 
     expect(res.status).toBe(201)
